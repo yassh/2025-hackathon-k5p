@@ -13,6 +13,7 @@
     "dotenv": "16.4.7",
     "graphql": "^16.8.1",
     "next": "15.3.2",
+    "next-auth": "5.0.0-beta.29",
     "payload": "3.46.0",
     "payload-authjs": "^0.8.2",
     "react": "19.1.0",
