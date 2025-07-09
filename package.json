@@ -60,6 +60,8 @@
     "fix:prettier": "cross-env NODE_OPTIONS=--no-deprecation prettier './**/*.{js,jsx,ts,tsx}' --write",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+    "init-db": "run-s init-db:fresh",
+    "init-db:fresh": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:fresh",
     "lint": "run-p lint:*",
     "lint:eslint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
     "lint:prettier": "cross-env NODE_OPTIONS=--no-deprecation prettier './**/*.{js,jsx,ts,tsx}' --check",
