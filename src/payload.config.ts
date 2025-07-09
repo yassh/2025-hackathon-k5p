@@ -6,6 +6,7 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
+import { ja } from '@payloadcms/translations/languages/ja'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -14,11 +15,15 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  i18n: {
+    supportedLanguages: { ja },
+  },
   admin: {
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    dateFormat: 'yyyy-MM-dd HH:mm',
   },
   collections: [Users, Media],
   editor: lexicalEditor(),
