@@ -9,9 +9,9 @@ import { authjsPlugin } from "payload-authjs"
 import sharp from "sharp"
 import { fileURLToPath } from "url"
 import { authConfig } from "./auth.config"
-import { Invitations } from "./collections/Invitations"
-import { Media } from "./collections/Media"
-import { Users } from "./collections/Users"
+import { InvitationsCollection } from "./collections/InvitationsCollection"
+import { MediaCollection } from "./collections/MediaCollection"
+import { UsersCollection } from "./collections/UsersCollection"
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -21,13 +21,13 @@ export default buildConfig({
     supportedLanguages: { ja },
   },
   admin: {
-    user: Users.slug,
+    user: UsersCollection.slug,
     importMap: {
       baseDir: path.resolve(dirname),
     },
     dateFormat: "yyyy-MM-dd HH:mm",
   },
-  collections: [Users, Media, Invitations],
+  collections: [UsersCollection, MediaCollection, InvitationsCollection],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
