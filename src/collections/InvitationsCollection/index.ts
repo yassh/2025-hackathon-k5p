@@ -1,6 +1,6 @@
 import type { CollectionConfig } from "payload"
 
-export const InvitationsCollection: CollectionConfig = {
+export const InvitationsCollection = {
   slug: "invitations",
   labels: {
     singular: "お誘い",
@@ -118,4 +118,4 @@ export const InvitationsCollection: CollectionConfig = {
       },
     ],
   },
-}
+} as const satisfies CollectionConfig

@@ -1,6 +1,6 @@
 import type { CollectionConfig } from "payload"
 
-export const UsersCollection: CollectionConfig = {
+export const UsersCollection = {
   slug: "users",
   labels: {
     singular: "ユーザー",
@@ -52,4 +52,4 @@ export const UsersCollection: CollectionConfig = {
       required: true,
     },
   ],
-}
+} as const satisfies CollectionConfig

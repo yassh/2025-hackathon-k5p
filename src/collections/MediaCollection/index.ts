@@ -1,6 +1,6 @@
 import type { CollectionConfig } from "payload"
 
-export const MediaCollection: CollectionConfig = {
+export const MediaCollection = {
   slug: "media",
   labels: {
     singular: "メディア",
@@ -11,4 +11,4 @@ export const MediaCollection: CollectionConfig = {
   },
   fields: [],
   upload: true,
-}
+} as const satisfies CollectionConfig
