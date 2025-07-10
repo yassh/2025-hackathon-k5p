@@ -1,4 +1,6 @@
 import type { CollectionConfig } from "payload"
+import { MediaCollection } from "../MediaCollection"
+import { UsersCollection } from "../UsersCollection"
 
 export const InvitationsCollection = {
   slug: "invitations",
@@ -38,20 +40,26 @@ export const InvitationsCollection = {
   fields: [
     {
       name: "title",
-      type: "text",
       label: "タイトル",
+      type: "text",
       required: true,
     },
     {
       name: "message",
-      type: "textarea",
       label: "メッセージ",
+      type: "textarea",
       required: true,
     },
     {
+      name: "image",
+      label: "画像",
+      type: "upload",
+      relationTo: MediaCollection.slug,
+    },
+    {
       name: "startDate",
-      type: "date",
       label: "開始日時",
+      type: "date",
       required: true,
       admin: {
         date: {
@@ -62,8 +70,8 @@ export const InvitationsCollection = {
     },
     {
       name: "endDate",
-      type: "date",
       label: "終了日時",
+      type: "date",
       admin: {
         date: {
           pickerAppearance: "dayAndTime",
@@ -73,8 +81,8 @@ export const InvitationsCollection = {
     },
     {
       name: "maxParticipants",
-      type: "number",
       label: "上限人数",
+      type: "number",
       min: 1,
       admin: {
         description: "設定しないと無制限になります。",
@@ -82,8 +90,8 @@ export const InvitationsCollection = {
     },
     {
       name: "deadline",
-      type: "date",
       label: "締切日時",
+      type: "date",
       required: true,
       admin: {
         date: {
@@ -94,16 +102,16 @@ export const InvitationsCollection = {
     },
     {
       name: "participants",
-      type: "relationship",
-      relationTo: "users",
       label: "参加者",
+      type: "relationship",
+      relationTo: UsersCollection.slug,
       hasMany: true,
     },
     {
       name: "createdBy",
-      type: "relationship",
-      relationTo: "users",
       label: "作成者",
+      type: "relationship",
+      relationTo: UsersCollection.slug,
       required: true,
       admin: {
         readOnly: true,

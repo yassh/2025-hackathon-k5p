@@ -123,6 +123,7 @@ export interface Invitation {
   id: number;
   title: string;
   message: string;
+  image?: (number | null) | Media;
   startDate: string;
   endDate?: string | null;
   /**
@@ -134,6 +135,24 @@ export interface Invitation {
   createdBy: string | User;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -156,24 +175,6 @@ export interface User {
     | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -243,6 +244,7 @@ export interface PayloadMigration {
 export interface InvitationsSelect<T extends boolean = true> {
   title?: T;
   message?: T;
+  image?: T;
   startDate?: T;
   endDate?: T;
   maxParticipants?: T;
