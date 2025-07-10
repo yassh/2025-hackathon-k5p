@@ -67,18 +67,18 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
-    media: Media;
     invitations: Invitation;
+    media: Media;
+    users: User;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
     invitations: InvitationsSelect<false> | InvitationsSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -114,6 +114,26 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "invitations".
+ */
+export interface Invitation {
+  id: number;
+  title: string;
+  message: string;
+  startDate: string;
+  endDate?: string | null;
+  /**
+   * 設定しないと無制限になります。
+   */
+  maxParticipants?: number | null;
+  deadline: string;
+  participants?: (string | User)[] | null;
+  createdBy: string | User;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -157,42 +177,22 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "invitations".
- */
-export interface Invitation {
-  id: number;
-  title: string;
-  message: string;
-  startDate: string;
-  endDate?: string | null;
-  /**
-   * 設定しないと無制限になります。
-   */
-  maxParticipants?: number | null;
-  deadline: string;
-  participants?: (string | User)[] | null;
-  createdBy: string | User;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: string | User;
+        relationTo: 'invitations';
+        value: number | Invitation;
       } | null)
     | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
     | ({
-        relationTo: 'invitations';
-        value: number | Invitation;
+        relationTo: 'users';
+        value: string | User;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -238,23 +238,17 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "invitations_select".
  */
-export interface UsersSelect<T extends boolean = true> {
-  id?: T;
-  email?: T;
-  emailVerified?: T;
-  name?: T;
-  image?: T;
-  role?: T;
-  accounts?:
-    | T
-    | {
-        id?: T;
-        provider?: T;
-        providerAccountId?: T;
-        type?: T;
-      };
+export interface InvitationsSelect<T extends boolean = true> {
+  title?: T;
+  message?: T;
+  startDate?: T;
+  endDate?: T;
+  maxParticipants?: T;
+  deadline?: T;
+  participants?: T;
+  createdBy?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -277,17 +271,23 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "invitations_select".
+ * via the `definition` "users_select".
  */
-export interface InvitationsSelect<T extends boolean = true> {
-  title?: T;
-  message?: T;
-  startDate?: T;
-  endDate?: T;
-  maxParticipants?: T;
-  deadline?: T;
-  participants?: T;
-  createdBy?: T;
+export interface UsersSelect<T extends boolean = true> {
+  id?: T;
+  email?: T;
+  emailVerified?: T;
+  name?: T;
+  image?: T;
+  role?: T;
+  accounts?:
+    | T
+    | {
+        id?: T;
+        provider?: T;
+        providerAccountId?: T;
+        type?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

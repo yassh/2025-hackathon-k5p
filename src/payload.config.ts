@@ -27,7 +27,7 @@ export default buildConfig({
     },
     dateFormat: "yyyy-MM-dd HH:mm",
   },
-  collections: [UsersCollection, MediaCollection, InvitationsCollection],
+  collections: [InvitationsCollection, MediaCollection, UsersCollection],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
