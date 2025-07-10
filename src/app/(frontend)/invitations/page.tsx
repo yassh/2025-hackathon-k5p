@@ -3,6 +3,7 @@ import { headers as getHeaders } from "next/headers.js"
 import Link from "next/link"
 import { getPayload } from "payload"
 import { FC } from "react"
+import { InvitationCard } from "./_components/InvitationCard"
 
 const Page: FC = async () => {
   const payloadConfig = await configPromise
@@ -38,13 +39,13 @@ const Page: FC = async () => {
 
   return (
     <>
-      <h2>イベント一覧</h2>
+      <h2>お誘い一覧</h2>
 
-      <ul>
+      <div>
         {invitations.docs.map((invitation) => (
-          <li key={invitation.id}>{invitation.title}</li>
+          <InvitationCard key={invitation.id} invitation={invitation} />
         ))}
-      </ul>
+      </div>
     </>
   )
 }
