@@ -9,5 +9,13 @@ declare module "next-auth" {
 }
 
 export const authConfig: NextAuthConfig = {
-  providers: [Google],
+  providers: [
+    Google({
+      authorization: {
+        params: {
+          prompt: "select_account",
+        },
+      },
+    }),
+  ],
 }
