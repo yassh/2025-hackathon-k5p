@@ -9,6 +9,7 @@ import { authjsPlugin } from "payload-authjs"
 import sharp from "sharp"
 import { fileURLToPath } from "url"
 import { authConfig } from "./auth.config"
+import { Invitations } from "./collections/Invitations"
 import { Media } from "./collections/Media"
 import { Users } from "./collections/Users"
 
@@ -26,7 +27,7 @@ export default buildConfig({
     },
     dateFormat: "yyyy-MM-dd HH:mm",
   },
-  collections: [Users, Media],
+  collections: [Users, Media, Invitations],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
