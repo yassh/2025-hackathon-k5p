@@ -2,6 +2,7 @@
 import { postgresAdapter } from "@payloadcms/db-postgres"
 import { payloadCloudPlugin } from "@payloadcms/payload-cloud"
 import { lexicalEditor } from "@payloadcms/richtext-lexical"
+import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob"
 import { ja } from "@payloadcms/translations/languages/ja"
 import path from "path"
 import { buildConfig } from "payload"
@@ -44,6 +45,15 @@ export default buildConfig({
 
     authjsPlugin({
       authjsConfig: authConfig,
+    }),
+
+    // ☞ https://payloadcms.com/docs/upload/storage-adapters#vercel-blob-storage
+    vercelBlobStorage({
+      enabled: process.env.VERCEL_BLOB_ENABLED === "true",
+      collections: {
+        [MediaCollection.slug]: true,
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN,
     }),
   ],
 })
