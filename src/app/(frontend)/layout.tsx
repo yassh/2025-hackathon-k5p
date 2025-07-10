@@ -1,19 +1,30 @@
-import React from "react"
+import { FC, ReactNode } from "react"
 import "./styles.css"
 
 export const metadata = {
-  description: "A blank template using Payload in a Next.js app.",
-  title: "Payload Blank Template",
+  description:
+    "ビットエーメンバーによるビットエーメンバーのためのお誘い特化型社内SNS",
+  title: "お誘いくん",
 }
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
+type Props = {
+  children: ReactNode
+}
+
+const Layout: FC<Props> = async (props) => {
   const { children } = props
 
   return (
-    <html lang="en">
+    <html lang="ja">
       <body>
+        <h1>お誘いくん</h1>
+        <p>
+          ビットエーメンバーによるビットエーメンバーのためのお誘い特化型社内SNS
+        </p>
         <main>{children}</main>
       </body>
     </html>
   )
 }
+
+export default Layout
