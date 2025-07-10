@@ -56,6 +56,7 @@ export const InvitationsCollection = {
       admin: {
         date: {
           pickerAppearance: "dayAndTime",
+          displayFormat: "yyyy年MM月dd日 HH:mm",
         },
       },
     },
@@ -63,10 +64,10 @@ export const InvitationsCollection = {
       name: "endDate",
       type: "date",
       label: "終了日時",
-      required: true,
       admin: {
         date: {
           pickerAppearance: "dayAndTime",
+          displayFormat: "yyyy年MM月dd日 HH:mm",
         },
       },
     },
@@ -74,8 +75,10 @@ export const InvitationsCollection = {
       name: "maxParticipants",
       type: "number",
       label: "上限人数",
-      required: true,
       min: 1,
+      admin: {
+        description: "設定しないと無制限になります。",
+      },
     },
     {
       name: "deadline",
@@ -85,6 +88,7 @@ export const InvitationsCollection = {
       admin: {
         date: {
           pickerAppearance: "dayAndTime",
+          displayFormat: "yyyy年MM月dd日 HH:mm",
         },
       },
     },

@@ -164,8 +164,11 @@ export interface Invitation {
   title: string;
   message: string;
   startDate: string;
-  endDate: string;
-  maxParticipants: number;
+  endDate?: string | null;
+  /**
+   * 設定しないと無制限になります。
+   */
+  maxParticipants?: number | null;
   deadline: string;
   participants?: (string | User)[] | null;
   createdBy: string | User;
