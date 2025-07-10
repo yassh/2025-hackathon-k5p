@@ -16,12 +16,18 @@ const Layout: FC<Props> = async (props) => {
 
   return (
     <html lang="ja">
-      <body>
-        <h1>お誘いくん</h1>
-        <p>
-          ビットエーメンバーによるビットエーメンバーのためのお誘い特化型社内SNS
-        </p>
-        <main>{children}</main>
+      <body className="bg-gray-50 min-h-screen">
+        <div className="bg-white shadow-sm border-b border-gray-200">
+          <div className="container mx-auto px-4 py-6">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              お誘いくん
+            </h1>
+            <p className="text-gray-600">
+              ビットエーメンバーによるビットエーメンバーのためのお誘い特化型社内SNS
+            </p>
+          </div>
+        </div>
+        <main className="container mx-auto px-4 py-8">{children}</main>
       </body>
     </html>
   )
