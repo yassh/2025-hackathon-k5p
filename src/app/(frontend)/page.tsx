@@ -69,7 +69,7 @@ const Page: FC = async () => {
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
             ログアウト
           </h3>
-          <p className="text-gray-600 text-sm">セッションを終了します</p>
+          <p className="text-gray-600 text-sm">ログアウトします</p>
         </Link>
       </div>
     </div>
