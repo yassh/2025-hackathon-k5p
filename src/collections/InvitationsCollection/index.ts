@@ -89,7 +89,7 @@ export const InvitationsCollection = {
       },
     },
     {
-      name: "deadline",
+      name: "closingDate",
       label: "締切日時",
       type: "date",
       required: true,

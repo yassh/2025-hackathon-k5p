@@ -32,8 +32,8 @@ export const InvitationCard: FC<Props> = (props) => {
       </div>
       <div>
         締切：
-        {invitation.deadline
-          ? format(new Date(invitation.deadline), "yyyy年MM月dd日 HH:mm")
+        {invitation.closingDate
+          ? format(new Date(invitation.closingDate), "yyyy年MM月dd日 HH:mm")
           : "なし"}
       </div>
       <div>

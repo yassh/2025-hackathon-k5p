@@ -130,7 +130,7 @@ export interface Invitation {
    * 設定しないと無制限になります。
    */
   maxParticipants?: number | null;
-  deadline: string;
+  closingDate: string;
   participants?: (string | User)[] | null;
   createdBy: string | User;
   updatedAt: string;
@@ -248,7 +248,7 @@ export interface InvitationsSelect<T extends boolean = true> {
   startDate?: T;
   endDate?: T;
   maxParticipants?: T;
-  deadline?: T;
+  closingDate?: T;
   participants?: T;
   createdBy?: T;
   updatedAt?: T;
