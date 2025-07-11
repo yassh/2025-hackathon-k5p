@@ -1,67 +1,159 @@
-# Payload Blank Template
+# お誘いくん
 
-This template comes configured with the bare minimum to get started on anything you need.
+お誘いくんは、友人や同僚との集まりやイベントを簡単に企画・管理できるWebアプリケーションです。イベントの作成から参加者の管理まで、すべてをシンプルに行えます。
 
-## Quick start
+## サービスの概要
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+### どんなサービスか
+- **イベント企画機能**: タイトル、メッセージ、開始/終了日時、参加人数上限、締切日時を設定してイベントを作成
+- **参加者管理**: 誰が参加するかを簡単に管理
+- **画像アップロード**: イベントに関連する画像を添付可能
+- **認証システム**: ログイン機能により、安全にイベントを管理
+- **レスポンシブデザイン**: PC・スマートフォン両方に対応
 
-## Quick Start - local setup
+### 主な機能
+- イベント作成・編集・削除
+- 参加者の招待と管理
+- イベント画像の添付
+- 管理者機能
+- 直感的なユーザーインターフェース
 
-To spin up this template locally, follow these steps:
+## 技術スタック
 
-### Clone
+### フロントエンド
+- **Next.js 15**: Reactベースのフルスタックフレームワーク
+- **React 19**: 最新のReactライブラリ
+- **TailwindCSS**: ユーティリティファーストのCSSフレームワーク
+- **TypeScript**: 型安全な開発のためのプログラミング言語
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+### バックエンド・CMS
+- **Payload CMS 3.0**: 強力なヘッドレスCMS
+- **PostgreSQL**: リレーショナルデータベース
+- **NextAuth.js**: 認証システム
+- **GraphQL**: APIクエリ言語
 
-### Development
+### 開発・デプロイ
+- **Docker**: コンテナ化による環境統一
+- **ESLint**: コード品質管理
+- **Prettier**: コード整形
+- **Playwright**: E2Eテスト
+- **Vitest**: ユニットテスト
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URI` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+## セットアップ方法
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+### 必要な環境
+- Node.js 18.20.2以上または20.9.0以上
+- pnpm 9以上
+- PostgreSQL（またはDocker）
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+### ローカル開発環境のセットアップ
 
-#### Docker (Optional)
+#### 1. リポジトリのクローン
+```bash
+git clone https://github.com/yassh/2025-hackathon-k5p.git
+cd 2025-hackathon-k5p
+```
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+#### 2. 依存関係のインストール
+```bash
+pnpm install
+```
 
-To do so, follow these steps:
+#### 3. 環境変数の設定
+```bash
+cp .env.example .env
+```
 
-- Modify the `MONGODB_URI` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URI` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+`.env`ファイルを編集して、必要な環境変数を設定してください：
+- `DATABASE_URI`: PostgreSQLの接続URL
+- `PAYLOAD_SECRET`: Payload用のシークレットキー
+- その他の必要な設定
 
-## How it works
+#### 4. データベースの初期化
+```bash
+pnpm run init-db
+```
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+#### 5. 開発サーバーの起動
+```bash
+pnpm run dev
+```
 
-### Collections
+アプリケーションは `http://localhost:3000` で起動します。
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+### Docker を使用した開発
 
-- #### Users (Authentication)
+Dockerを使用することで、より簡単に開発環境を構築できます。
 
-  Users are auth-enabled collections that have access to the admin panel.
+#### 1. Docker Composeの起動
+```bash
+docker-compose up
+```
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+#### 2. データベースの初期化（別のターミナルで）
+```bash
+pnpm run init-db
+```
 
-- #### Media
+### 本番環境へのデプロイ
 
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+#### 1. ビルド
+```bash
+pnpm run build
+```
 
-### Docker
+#### 2. 本番サーバーの起動
+```bash
+pnpm run start
+```
 
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
+## 利用可能なコマンド
 
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
+### 開発
+- `pnpm run dev`: 開発サーバーを起動
+- `pnpm run devsafe`: .nextディレクトリをクリアしてから開発サーバーを起動
 
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
+### ビルド・本番
+- `pnpm run build`: 本番用ビルドを作成
+- `pnpm run start`: 本番サーバーを起動
 
-## Questions
+### コード品質
+- `pnpm run lint`: リント（ESLint、Prettier、TypeScript）を実行
+- `pnpm run fix`: リントエラーを自動修正
+- `pnpm run fix:eslint`: ESLintエラーを自動修正
+- `pnpm run fix:prettier`: Prettierでコード整形
 
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+### テスト
+- `pnpm run test`: 全てのテストを実行
+- `pnpm run test:int`: 統合テストを実行
+- `pnpm run test:e2e`: E2Eテストを実行
+
+### データベース
+- `pnpm run init-db`: データベースを初期化
+- `pnpm run payload`: Payloadコマンドを実行
+
+### 型・コード生成
+- `pnpm run gen`: 型定義とインポートマップを生成
+- `pnpm run gen:types`: TypeScript型定義を生成
+- `pnpm run gen:importmap`: インポートマップを生成
+
+## 使い方
+
+1. アプリケーションにアクセスしてログインします
+2. 「お誘い一覧」から既存のイベントを確認できます
+3. 「管理画面」からイベントを作成・編集できます
+4. イベント作成時には以下を設定できます：
+   - タイトル
+   - メッセージ
+   - 開始・終了日時
+   - 参加人数上限
+   - 締切日時
+   - 画像
+
+## ライセンス
+
+MIT License
+
+## サポート
+
+質問や問題がある場合は、GitHubのIssuesを通じてお知らせください。
