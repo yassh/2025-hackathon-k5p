@@ -129,6 +129,7 @@ export const InvitationsCollection = {
         return data
       },
     ],
+    // 👇 ここから下を修正
     afterChange: [
       async ({ operation, doc }) => {
         if (
@@ -136,7 +137,33 @@ export const InvitationsCollection = {
           process.env.ALEXA_SPEECH_API_URL &&
           process.env.ALEXA_SPEECH_API_KEY
         ) {
-          const message = `${doc.title}のお誘いです。${doc.message}`
+          /**
+           * ISO形式の日時文字列（UTC）を日本時間（JST）の読み上げ形式に変換します。
+           * @param isoString - `2024-01-01T15:00:00.000Z` のようなUTCの日時文字列
+           * @returns `2025年1月2日 0時0分` のようなJSTの文字列
+           */
+          const formatToJSTSpeech = (isoString?: string): string => {
+            if (!isoString) {
+              return "未定"
+            }
+            // 元のUTC日時から9時間後のタイムスタンプを計算
+            const jstDate = new Date(new Date(isoString).getTime() + 9 * 60 * 60 * 1000)
+
+            // UTCメソッドを使ってJSTの日時を取得
+            const year = jstDate.getUTCFullYear()
+            const month = jstDate.getUTCMonth() + 1
+            const day = jstDate.getUTCDate()
+            const hours = jstDate.getUTCHours()
+            const minutes = jstDate.getUTCMinutes()
+
+            return `${year}年${month}月${day}日 ${hours}時${minutes}分`
+          }
+
+          // 各日時をJSTに変換
+          const startDateJST = formatToJSTSpeech(doc.startDate)
+           const pause = `<break time="700ms"/>`
+
+          const message = `予定が作成されました。${pause}${doc.title}のお誘いです${pause}${doc.message}${pause}日時は${startDateJST}です。参加お待ちしてます。`
 
           const response = await fetch(process.env.ALEXA_SPEECH_API_URL, {
             method: "POST",
@@ -154,5 +181,6 @@ export const InvitationsCollection = {
         }
       },
     ],
+    // 👆 ここまでを修正
   },
 } as const satisfies CollectionConfig
