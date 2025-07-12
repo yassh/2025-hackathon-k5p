@@ -14,6 +14,7 @@ export const authConfig: NextAuthConfig = {
       authorization: {
         params: {
           prompt: "select_account",
+          scope: "openid email profile https://www.googleapis.com/auth/calendar",
         },
       },
     }),

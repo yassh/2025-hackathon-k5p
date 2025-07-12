@@ -1,6 +1,7 @@
 import type { Access, CollectionConfig } from "payload"
 import { MediaCollection } from "../MediaCollection"
 import { UsersCollection } from "../UsersCollection"
+import { createCalendarEvent, getUserGoogleTokens } from "../../utils/google-calendar"
 
 const allowIfCreateByMe: Access = ({ req }) => {
   if (!req.user) {
@@ -177,6 +178,42 @@ export const InvitationsCollection = {
           if (!response.ok) {
             const responseData = await response.json()
             console.error("Error:", responseData)
+          }
+        }
+
+        // Google Calendar 連携
+        if (operation === "create" && doc.createdBy && doc.startDate) {
+          try {
+            console.log('Creating Google Calendar event for invitation:', doc.id)
+            
+            // 作成者のGoogle OAuth トークンを取得
+            const tokens = await getUserGoogleTokens(doc.createdBy)
+            
+            if (tokens && tokens.accessToken && tokens.refreshToken) {
+              const calendarEvent = {
+                title: doc.title,
+                description: doc.message,
+                startDate: doc.startDate,
+                endDate: doc.endDate || doc.startDate,
+              }
+
+              const result = await createCalendarEvent({
+                accessToken: tokens.accessToken,
+                refreshToken: tokens.refreshToken,
+                event: calendarEvent,
+              })
+
+              if (result.success) {
+                console.log('Google Calendar event created successfully:', result.eventId)
+              } else {
+                console.error('Failed to create Google Calendar event:', result.error)
+              }
+            } else {
+              console.log('Google OAuth tokens not available for user:', doc.createdBy)
+              console.log('User may not have connected their Google account or tokens may be expired')
+            }
+          } catch (error) {
+            console.error('Error creating Google Calendar event:', error)
           }
         }
       },
