@@ -85,7 +85,7 @@ export const InvitationCard: FC<Props> = (props) => {
           <h3 className="text-xl font-bold text-gray-900 mb-2">
             {invitation.title}
           </h3>
-          <p className="text-gray-700 mb-4 line-clamp-3">
+          <p className="text-gray-700 mb-4 whitespace-pre-wrap">
             {invitation.message}
           </p>
 
@@ -110,9 +110,15 @@ export const InvitationCard: FC<Props> = (props) => {
                 {format(new Date(invitation.startDate), "yyyy年MM月dd日 HH:mm")}
                 {invitation.endDate &&
                   ` 〜 ${
-                    isSameDay(new Date(invitation.startDate), new Date(invitation.endDate))
+                    isSameDay(
+                      new Date(invitation.startDate),
+                      new Date(invitation.endDate),
+                    )
                       ? format(new Date(invitation.endDate), "HH:mm")
-                      : format(new Date(invitation.endDate), "yyyy年MM月dd日 HH:mm")
+                      : format(
+                          new Date(invitation.endDate),
+                          "yyyy年MM月dd日 HH:mm",
+                        )
                   }`}
               </span>
             </div>
