@@ -1,67 +1,120 @@
-# Payload Blank Template
+# 2025-hackathon-k5p
 
-This template comes configured with the bare minimum to get started on anything you need.
+## 概要
 
-## Quick start
+このプロジェクトは、Payload CMS 3.0をベースとしたWebアプリケーションです。Next.js、TypeScript、PostgreSQLを使用して構築されており、モダンなWebコンテンツ管理システムを提供します。
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+Payload CMSは、開発者向けのヘッドレスCMSで、管理画面、認証、ファイル管理などの機能を提供します。
 
-## Quick Start - local setup
+## システム構成
 
-To spin up this template locally, follow these steps:
+### 技術スタック
 
-### Clone
+- **フロントエンド**: Next.js 15.3.2, React 19.1.0
+- **バックエンド**: Payload CMS 3.45.0
+- **データベース**: PostgreSQL (via @payloadcms/db-postgres)
+- **認証**: NextAuth.js 5.0.0-beta.29
+- **ストレージ**: Vercel Blob Storage
+- **スタイリング**: Tailwind CSS
+- **言語**: TypeScript 5.7.3
+- **パッケージマネージャー**: pnpm
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+### 主要な機能
 
-### Development
+- **コンテンツ管理**: Payload CMSによる直感的なコンテンツ管理
+- **認証システム**: NextAuth.jsによる認証機能
+- **ファイル管理**: 画像アップロード、リサイズ、フォーカルポイント設定
+- **多言語対応**: @payloadcms/translations による多言語サポート
+- **リッチテキストエディタ**: Lexical エディタによる高度なテキスト編集
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URI` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+## セットアップ方法
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+### 必要な環境
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+- Node.js (18.20.2以上または20.9.0以上)
+- pnpm (9以上)
+- PostgreSQL データベース
 
-#### Docker (Optional)
+### インストール手順
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+1. **リポジトリのクローン**
+   ```bash
+   git clone <repository-url>
+   cd 2025-hackathon-k5p
+   ```
 
-To do so, follow these steps:
+2. **依存関係のインストール**
+   ```bash
+   pnpm install
+   ```
 
-- Modify the `MONGODB_URI` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URI` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+3. **環境変数の設定**
+   ```bash
+   cp .env.example .env
+   ```
+   `.env`ファイルを編集して、以下の環境変数を設定してください：
+   - `MONGODB_URI`: PostgreSQL接続URL
+   - その他の必要な環境変数
 
-## How it works
+4. **データベースの初期化**
+   ```bash
+   pnpm run init-db
+   ```
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+5. **型定義の生成**
+   ```bash
+   pnpm run gen
+   ```
 
-### Collections
+6. **開発サーバーの起動**
+   ```bash
+   pnpm run dev
+   ```
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+7. **アプリケーションにアクセス**
+   ブラウザで `http://localhost:3000` にアクセスしてください。
 
-- #### Users (Authentication)
+## 基本的なコマンドの説明
 
-  Users are auth-enabled collections that have access to the admin panel.
+### 開発関連
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+- `pnpm run dev`: 開発サーバーの起動
+- `pnpm run devsafe`: .nextを削除してからの開発サーバー起動
+- `pnpm run build`: 本番用ビルドの実行
+- `pnpm run start`: 本番モードでの起動
 
-- #### Media
+### コード品質管理
 
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+- `pnpm run lint`: ESLint、Prettier、TypeScriptの型チェックを実行
+- `pnpm run lint:eslint`: ESLintのみ実行
+- `pnpm run lint:prettier`: Prettierのチェックのみ実行
+- `pnpm run lint:tsc`: TypeScriptの型チェックのみ実行
+- `pnpm run fix`: ESLintとPrettierの自動修正を実行
+- `pnpm run fix:eslint`: ESLintの自動修正のみ実行
+- `pnpm run fix:prettier`: Prettierの自動修正のみ実行
 
-### Docker
+### テスト
 
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
+- `pnpm run test`: 統合テストとE2Eテストを実行
+- `pnpm run test:int`: 統合テストのみ実行
+- `pnpm run test:e2e`: E2Eテスト（Playwright）のみ実行
 
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
+### Payload CMS関連
 
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
+- `pnpm run payload`: Payload CLIの実行
+- `pnpm run gen`: 型定義とインポートマップの生成
+- `pnpm run gen:types`: 型定義の生成
+- `pnpm run gen:importmap`: インポートマップの生成
+- `pnpm run init-db`: データベースの初期化
+- `pnpm run init-db:fresh`: データベースの新規作成（既存データは削除）
 
-## Questions
+### その他
 
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+- `pnpm run start`: 本番環境でのアプリケーション起動
+
+## 質問・サポート
+
+問題が発生した場合や質問がある場合は、以下のリソースをご利用ください：
+
+- [Payload CMS Discord](https://discord.com/invite/payload)
+- [GitHub Discussions](https://github.com/payloadcms/payload/discussions)
