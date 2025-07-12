@@ -9,6 +9,9 @@ export const UsersCollection = {
   admin: {
     useAsTitle: "name",
   },
+  access: {
+    read: ({ req }) => Boolean(req.user),
+  },
   auth: true,
   fields: [
     // Email added by default
