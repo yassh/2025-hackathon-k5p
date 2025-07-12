@@ -63,6 +63,13 @@ export const InvitationCard: FC<Props> = (props) => {
       }),
   )
 
+  const isHost = Boolean(
+    invitation.createdBy &&
+      (typeof invitation.createdBy === "string"
+        ? invitation.createdBy === user.id
+        : invitation.createdBy.id === user.id),
+  )
+
   return (
     <section className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 p-6 mb-6">
       <div className="flex flex-col md:flex-row gap-4">
@@ -178,21 +185,27 @@ export const InvitationCard: FC<Props> = (props) => {
           </div>
 
           <div className="flex justify-end">
-            <button
-              type="button"
-              onClick={
-                isJoined ? handleClickLeaveButton : handleClickJoinButton
-              }
-              disabled={isRequesting}
-              className={`px-6 py-2 rounded-lg transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed
-                          ${
-                            isJoined
-                              ? "bg-red-600 hover:bg-red-700 text-white focus:ring-red-500"
-                              : "bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500"
-                          }`}
-            >
-              {isJoined ? "参加取り消し" : "参加"}
-            </button>
+            {isHost ? (
+              <div className="px-6 py-2 rounded-lg bg-gray-100 text-gray-700 font-medium">
+                自分が主催者
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={
+                  isJoined ? handleClickLeaveButton : handleClickJoinButton
+                }
+                disabled={isRequesting}
+                className={`px-6 py-2 rounded-lg transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed
+                            ${
+                              isJoined
+                                ? "bg-red-600 hover:bg-red-700 text-white focus:ring-red-500"
+                                : "bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500"
+                            }`}
+              >
+                {isJoined ? "参加取り消し" : "参加"}
+              </button>
+            )}
           </div>
         </div>
       </div>
