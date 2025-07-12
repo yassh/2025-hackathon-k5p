@@ -147,7 +147,9 @@ export const InvitationsCollection = {
               return "未定"
             }
             // 元のUTC日時から9時間後のタイムスタンプを計算
-            const jstDate = new Date(new Date(isoString).getTime() + 9 * 60 * 60 * 1000)
+            const jstDate = new Date(
+              new Date(isoString).getTime() + 9 * 60 * 60 * 1000,
+            )
 
             // UTCメソッドを使ってJSTの日時を取得
             const year = jstDate.getUTCFullYear()
@@ -161,7 +163,7 @@ export const InvitationsCollection = {
 
           // 各日時をJSTに変換
           const startDateJST = formatToJSTSpeech(doc.startDate)
-           const pause = `<break time="700ms"/>`
+          const pause = `<break time="700ms"/>`
 
           const message = `予定が作成されました。${pause}${doc.title}のお誘いです${pause}${doc.message}${pause}日時は${startDateJST}です。参加お待ちしてます。`
 
