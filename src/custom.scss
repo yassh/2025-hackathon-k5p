@@ -1,0 +1,42 @@
+body.payload-login {
+  // 👇 背景画像を指定
+  background-image: url("/icon_hackason.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  // --- オプション：コンテンツを見やすくするための背景オーバーレイ ---
+  > .render-to-dom {
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); // 半透明の黒いフィルター
+      z-index: 1;
+    }
+    > * {
+      position: relative;
+      z-index: 2;
+    }
+  }
+}
+
+// ログインフォーム上部にロゴ画像を表示
+body.payload-login .auth__form {
+  position: relative;
+  padding-top: 120px; // ロゴ分の余白
+}
+body.payload-login .auth__form:before {
+  content: "";
+  display: block;
+  width: 100px;
+  height: 100px;
+  background: url("/icon_hackason.png") no-repeat center/contain;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
