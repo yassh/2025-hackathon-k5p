@@ -1,7 +1,7 @@
 "use client"
 
 import { Invitation, User } from "@/payload-types"
-import { format } from "date-fns"
+import { format, isSameDay } from "date-fns"
 import { FC, useState } from "react"
 import { join } from "./join"
 import { leave } from "./leave"
@@ -112,7 +112,11 @@ export const InvitationCard: FC<Props> = (props) => {
               <span className="ml-1">
                 {format(new Date(invitation.startDate), "yyyy年MM月dd日 HH:mm")}
                 {invitation.endDate &&
-                  ` 〜 ${format(new Date(invitation.endDate), "yyyy年MM月dd日 HH:mm")}`}
+                  ` 〜 ${
+                    isSameDay(new Date(invitation.startDate), new Date(invitation.endDate))
+                      ? format(new Date(invitation.endDate), "HH:mm")
+                      : format(new Date(invitation.endDate), "yyyy年MM月dd日 HH:mm")
+                  }`}
               </span>
             </div>
 
