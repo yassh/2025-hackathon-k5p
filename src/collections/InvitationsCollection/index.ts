@@ -1,6 +1,8 @@
 import type { CollectionConfig } from "payload"
 import { MediaCollection } from "../MediaCollection"
 import { UsersCollection } from "../UsersCollection"
+import { createGoogleCalendarEvent } from "../../services/google-calendar"
+import { auth } from "../../auth"
 
 export const InvitationsCollection = {
   slug: "invitations",
@@ -130,26 +132,51 @@ export const InvitationsCollection = {
       },
     ],
     afterChange: [
-      async ({ operation, doc }) => {
-        if (
-          operation === "create" &&
-          process.env.ALEXA_SPEECH_API_URL &&
-          process.env.ALEXA_SPEECH_API_KEY
-        ) {
-          const message = `${doc.title}のお誘いです。${doc.message}`
+      async ({ operation, doc, req }) => {
+        if (operation === "create") {
+          // Alexa通知の処理（既存）
+          if (process.env.ALEXA_SPEECH_API_URL && process.env.ALEXA_SPEECH_API_KEY) {
+            const message = `${doc.title}のお誘いです。${doc.message}`
 
-          const response = await fetch(process.env.ALEXA_SPEECH_API_URL, {
-            method: "POST",
-            headers: {
-              "X-API-KEY": process.env.ALEXA_SPEECH_API_KEY,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ message }),
-          })
+            const response = await fetch(process.env.ALEXA_SPEECH_API_URL, {
+              method: "POST",
+              headers: {
+                "X-API-KEY": process.env.ALEXA_SPEECH_API_KEY,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ message }),
+            })
 
-          if (!response.ok) {
-            const responseData = await response.json()
-            console.error("Error:", responseData)
+            if (!response.ok) {
+              const responseData = await response.json()
+              console.error("Alexa API Error:", responseData)
+            }
+          }
+
+          // Google Calendar連携の処理（新規）
+          try {
+            if (req.user && req.user.accounts?.length > 0) {
+              // Google アカウントのアクセストークンを取得
+              const googleAccount = req.user.accounts.find(account => account.provider === "google")
+              
+              if (googleAccount && googleAccount.access_token) {
+                await createGoogleCalendarEvent(
+                  {
+                    title: doc.title,
+                    message: doc.message,
+                    startDate: doc.startDate,
+                    endDate: doc.endDate,
+                    createdBy: doc.createdBy,
+                  },
+                  googleAccount
+                )
+                console.log("Google Calendar event created successfully")
+              } else {
+                console.log("Google account or access token not found for user")
+              }
+            }
+          } catch (error) {
+            console.error("Error creating Google Calendar event:", error)
           }
         }
       },

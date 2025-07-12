@@ -35,6 +35,30 @@ export const UsersCollection = {
           type: "text",
           label: "Account Provider",
         },
+        {
+          name: "access_token",
+          type: "text",
+          label: "Access Token",
+          admin: {
+            hidden: true,
+          },
+        },
+        {
+          name: "refresh_token",
+          type: "text",
+          label: "Refresh Token",
+          admin: {
+            hidden: true,
+          },
+        },
+        {
+          name: "expires_at",
+          type: "number",
+          label: "Token Expires At",
+          admin: {
+            hidden: true,
+          },
+        },
       ],
     },
 
