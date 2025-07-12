@@ -48,10 +48,7 @@ export const InvitationCard: FC<Props> = (props) => {
     (invitation.image &&
       typeof invitation.image === "object" &&
       invitation.image.url) ||
-    (invitation.createdBy &&
-      typeof invitation.createdBy === "object" &&
-      invitation.createdBy.image) ||
-    "/default-invitation-image.png" // TODO: default-invitation-image.png を用意する
+    "/icon_hackason.png"
 
   const isJoined = Boolean(
     invitation.participants &&
