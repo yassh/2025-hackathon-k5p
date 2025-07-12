@@ -52,7 +52,11 @@ const Page: FC = async () => {
         <div className="space-y-0">
           {invitations.docs.length > 0 ? (
             invitations.docs.map((invitation) => (
-              <InvitationCard key={invitation.id} invitation={invitation} />
+              <InvitationCard
+                key={invitation.id}
+                user={user}
+                invitation={invitation}
+              />
             ))
           ) : (
             <div className="text-center py-12">

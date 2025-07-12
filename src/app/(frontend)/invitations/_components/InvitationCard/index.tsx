@@ -1,13 +1,48 @@
-import { Invitation } from "@/payload-types"
+"use client"
+
+import { Invitation, User } from "@/payload-types"
 import { format } from "date-fns"
-import { FC } from "react"
+import { FC, useState } from "react"
+import { join } from "./join"
+import { leave } from "./leave"
 
 type Props = {
+  user: User
   invitation: Invitation
 }
 
 export const InvitationCard: FC<Props> = (props) => {
-  const { invitation } = props
+  const { invitation: initialInvitation, user } = props
+  const [invitation, setInvitation] = useState(initialInvitation)
+  const [isRequesting, setIsRequesting] = useState(false)
+
+  const handleClickJoinButton = async () => {
+    setIsRequesting(true)
+    try {
+      const newInvitation = await join({ invitation, userId: user.id })
+      setInvitation(newInvitation)
+
+      alert(`「${invitation.title}」に参加しました！`)
+    } catch {
+      alert(`「${invitation.title}」への参加が失敗しました。`)
+    } finally {
+      setIsRequesting(false)
+    }
+  }
+
+  const handleClickLeaveButton = async () => {
+    setIsRequesting(true)
+    try {
+      const newInvitation = await leave({ invitation, userId: user.id })
+      setInvitation(newInvitation)
+
+      alert(`「${invitation.title}」への参加を取り消しました。`)
+    } catch {
+      alert(`「${invitation.title}」への参加の取り消しが失敗しました。`)
+    } finally {
+      setIsRequesting(false)
+    }
+  }
 
   const imageSrc =
     (invitation.image &&
@@ -17,6 +52,16 @@ export const InvitationCard: FC<Props> = (props) => {
       typeof invitation.createdBy === "object" &&
       invitation.createdBy.image) ||
     "/default-invitation-image.png" // TODO: default-invitation-image.png を用意する
+
+  const isJoined = Boolean(
+    invitation.participants &&
+      invitation.participants.some((participant) => {
+        if (typeof participant === "string") {
+          return participant === user.id
+        }
+        return participant.id === user.id
+      }),
+  )
 
   return (
     <section className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 p-6 mb-6">
@@ -132,14 +177,21 @@ export const InvitationCard: FC<Props> = (props) => {
             </div>
           </div>
 
-          {/* 参加ボタン */}
           <div className="flex justify-end">
             <button
               type="button"
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              onClick={
+                isJoined ? handleClickLeaveButton : handleClickJoinButton
+              }
+              disabled={isRequesting}
+              className={`px-6 py-2 rounded-lg transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed
+                          ${
+                            isJoined
+                              ? "bg-red-600 hover:bg-red-700 text-white focus:ring-red-500"
+                              : "bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500"
+                          }`}
             >
-              {/* TODO: クリックイベントハンドラ実装 */}
-              参加
+              {isJoined ? "参加取り消し" : "参加"}
             </button>
           </div>
         </div>
