@@ -1,6 +1,22 @@
-import type { CollectionConfig } from "payload"
+import type { Access, CollectionConfig } from "payload"
 import { MediaCollection } from "../MediaCollection"
 import { UsersCollection } from "../UsersCollection"
+
+const allowIfCreateByMe: Access = ({ req }) => {
+  if (!req.user) {
+    return false
+  }
+
+  if (req.user.role === "admin") {
+    return true
+  }
+
+  return {
+    createdBy: {
+      equals: req.user.id,
+    },
+  }
+}
 
 export const InvitationsCollection = {
   slug: "invitations",
@@ -12,30 +28,12 @@ export const InvitationsCollection = {
     useAsTitle: "title",
   },
   access: {
-    read: ({ req }) => Boolean(req.user),
     create: ({ req }) => Boolean(req.user),
-    update: ({ req, data }) => {
-      if (!req.user) {
-        return false
-      }
 
-      if (req.user.role === "admin") {
-        return true
-      }
-
-      return req.user.id === data?.createdBy
-    },
-    delete: ({ req, data }) => {
-      if (!req.user) {
-        return false
-      }
-
-      if (req.user.role === "admin") {
-        return true
-      }
-
-      return req.user.id === data?.createdBy
-    },
+    // 自分の作ったお誘いのみ閲覧・更新・削除可能にする
+    read: allowIfCreateByMe,
+    update: allowIfCreateByMe,
+    delete: allowIfCreateByMe,
   },
   fields: [
     {

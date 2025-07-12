@@ -1,7 +1,7 @@
 "use client"
 
 import { Invitation, User } from "@/payload-types"
-import { format } from "date-fns"
+import { format, isSameDay } from "date-fns"
 import { FC, useState } from "react"
 import { join } from "./join"
 import { leave } from "./leave"
@@ -48,10 +48,7 @@ export const InvitationCard: FC<Props> = (props) => {
     (invitation.image &&
       typeof invitation.image === "object" &&
       invitation.image.url) ||
-    (invitation.createdBy &&
-      typeof invitation.createdBy === "object" &&
-      invitation.createdBy.image) ||
-    "/default-invitation-image.png" // TODO: default-invitation-image.png を用意する
+    "/icon_hackason.png"
 
   const isJoined = Boolean(
     invitation.participants &&
@@ -92,13 +89,45 @@ export const InvitationCard: FC<Props> = (props) => {
           <h3 className="text-xl font-bold text-gray-900 mb-2">
             {invitation.title}
           </h3>
-          <p className="text-gray-700 mb-4 line-clamp-3">
+          <p className="text-gray-700 mb-4 whitespace-pre-wrap">
             {invitation.message}
           </p>
 
           {/* 詳細情報 */}
           <div className="space-y-2 mb-4">
-            {/* ...existing code... */}
+
+            <div className="flex items-center text-sm text-gray-600">
+              <svg
+                className="w-4 h-4 mr-2 text-blue-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span className="font-medium">日時：</span>
+              <span className="ml-1">
+                {format(new Date(invitation.startDate), "yyyy年MM月dd日 HH:mm")}
+                {invitation.endDate &&
+                  ` 〜 ${
+                    isSameDay(
+                      new Date(invitation.startDate),
+                      new Date(invitation.endDate),
+                    )
+                      ? format(new Date(invitation.endDate), "HH:mm")
+                      : format(
+                          new Date(invitation.endDate),
+                          "yyyy年MM月dd日 HH:mm",
+                        )
+                  }`}
+              </span>
+            </div>
+
             <div className="flex items-center text-sm text-gray-600">
               <svg
                 className="w-4 h-4 mr-2 text-red-500"
