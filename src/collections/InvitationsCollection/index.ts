@@ -129,5 +129,30 @@ export const InvitationsCollection = {
         return data
       },
     ],
+    afterChange: [
+      async ({ operation, doc }) => {
+        if (
+          operation === "create" &&
+          process.env.ALEXA_SPEECH_API_URL &&
+          process.env.ALEXA_SPEECH_API_KEY
+        ) {
+          const message = `${doc.title}のお誘いです。${doc.message}`
+
+          const response = await fetch(process.env.ALEXA_SPEECH_API_URL, {
+            method: "POST",
+            headers: {
+              "X-API-KEY": process.env.ALEXA_SPEECH_API_KEY,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message }),
+          })
+
+          if (!response.ok) {
+            const responseData = await response.json()
+            console.error("Error:", responseData)
+          }
+        }
+      },
+    ],
   },
 } as const satisfies CollectionConfig
